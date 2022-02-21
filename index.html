@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name = "viewport" content = "initial-scale-1, width=device-width">  -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connect Four</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Connect Four </h1>
+
+<div class="header">
+<div>
+  <form>
+      <div>  
+        Select:
+        <input type="radio" id="1PEasy"
+        name="gameType" value="1PEasy" onClick="validateRadio()">
+        <label for="gameType1">Minimax</label>
+    
+        <input type="radio" id="1PHard"
+        name="gameType" value="1PHard" onClick="validateRadio()">
+        <label for="gameType2">Scoring</label>
+
+        <input type="radio" id="2P"
+        name="gameType" value="2P" onClick="validateRadio()">
+      <label for="gameType3">2P</label>
+      </div>
+  </form>
+</div>
+
+  <div name="announcements" class="announcements">
+&nbsp;
+  </div>
+
+
+</div>
+
+    <script src="script.js"></script>
+</body>
+</html> 

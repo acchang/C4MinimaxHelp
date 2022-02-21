@@ -1,0 +1,86 @@
+.header {
+    width: 320px;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    background-color: lightblue;
+  }
+  
+  .announcements {
+    font-size: 1em;
+  }
+  
+  form {
+    font-size: 1em;
+  }
+  
+  
+  .selectorTable {
+    background-color: whitesmoke;
+    width: 320px;
+    height: 45px;
+  }
+  
+  .selectorCell {
+    background-color: whitesmoke;
+    width: 23px;
+    height: 23px;
+    text-align: center;
+  }
+  
+  .selectorCell .innerSelectorCell {
+    margin: auto;
+    text-align: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
+  
+  .whiteBG {
+    background-color: whitesmoke;
+  }
+  
+  .redBG {
+    background-color: red;
+  }
+  
+  .yellowBG {
+    background-color: yellow;
+  }
+  
+  
+  
+  .mainTable {
+    background-color: blue;
+    width: 320px;
+    height: 295px;
+  }
+  
+  /* what makes the gridlines go away? */
+  .outerCell {
+    background-color: blue;
+    width: 45px;
+    height: 45px;
+    text-align: center;
+  }
+  
+  .innerCell {
+    margin: auto;
+    text-align: center;
+    background-color: whitesmoke;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+  
+  .Yellow {
+    background-color: yellow;
+  }
+  
+  .Red {
+    background-color: red;
+  }
+  
