@@ -464,7 +464,7 @@ if (itsAOnePlayerGame == true) {
 availableIndexes = findAvailableIndexes(gameboard)
 console.log("AI chooses from: " + availableIndexes)
 // indexPick = (availableIndexes[Math.floor(Math.random() * availableIndexes.length)])
-indexPick = (minimax(parallelBoard, 8, !playerOneTurn)).special
+indexPick = (minimax(parallelBoard, 6, !playerOneTurn)).special
 }
 else if (itsAHardGame == true)
 { indexPick = pickBestMove() }
@@ -548,6 +548,8 @@ return 0 <= boardLocation.i && boardLocation.i < board.length
 /*
 Given 4 adjacent locations on the board, checks to see if those 4 locations constitutes
 a win (i.e. those 4 locations all contain yellow tokens, or those 4 locations all contain red tokens)
+
+AC: Wouldn't it be five since you add diagonals and ignore above?
 */
 let check4 = function (location1, location2, location3, location4) {
 if (!isInbound(location1) || !isInbound(location2) || !isInbound(location3) || !isInbound(location4))
