@@ -539,6 +539,8 @@ let isPlayerTurn = (numPlayerMoves === numComputerMoves);
 Not all (i, j) indexes are valid.
 isInbound(boardLocation) returns true if (boardLocation.i, boardLocation.j) represents
 a spot on the board that actually exists (and isn't out-of-range).
+
+AC: This is to check four in a row doesn't go out of bounds
 */	
 let isInbound /* as opposed to being out-of-bounds */ = function (boardLocation) {
 return 0 <= boardLocation.i && boardLocation.i < board.length
@@ -548,8 +550,6 @@ return 0 <= boardLocation.i && boardLocation.i < board.length
 /*
 Given 4 adjacent locations on the board, checks to see if those 4 locations constitutes
 a win (i.e. those 4 locations all contain yellow tokens, or those 4 locations all contain red tokens)
-
-AC: Wouldn't it be five since you add diagonals and ignore above?
 */
 let check4 = function (location1, location2, location3, location4) {
 if (!isInbound(location1) || !isInbound(location2) || !isInbound(location3) || !isInbound(location4))
@@ -608,7 +608,11 @@ for (let direction of directions) {
    let location2 = { i: i + direction[0] * 1, j: j + direction[1] * 1 };
    let location3 = { i: i + direction[0] * 2, j: j + direction[1] * 2 };
    let location4 = { i: i + direction[0] * 3, j: j + direction[1] * 3 };
-   
+ 
+   // AC: this only advances rightward though, don't I need leftward too?
+   // how does it know where to start from/ what 0,0 is with the `for` statements starting at 0?
+   // this is all in the function getBoardState(board)
+
    let possibleWinner = check4(location1, location2, location3, location4);
    
    if (possibleWinner === "Yellow")
@@ -626,11 +630,20 @@ hasPlayerWon: hasPlayerWon,
 hasComputerWon: hasComputerWon
 };
 }
+// ends function getBoardState(board)
+// is it better to avoid let
+// is it better to have some of these functions outside?
+
+
 
 /*
 Applies the move to the board by looking for the first available spot in the
 desired column (starting from the bottom -- that is, board.length - 1 -- and
 working our way up)
+
+**** AC -- if the move has no yellow or red in it, i is board.length minus 1
+where does board.length come from?
+
 */
 function applyMove(board, move, isPlayerTurn) {
 let i = board.length - 1;
@@ -644,10 +657,14 @@ i--;
 }
 }
 
+
 /*
 Undo a move to the board by looking at the top-most token in the desired column
 and removing it.
+
+AC -- this uses the object aspect ....
 */
+
 function unapplyMove(board, move) {
 let i = 0;
 while (true) {
@@ -658,6 +675,7 @@ if (board[i][move] === "Yellow" || board[i][move] === "Red") {
    be cleaner if the board started as a 2D array containing null instead
    
    Then we could just do board[i][move] = null
+
 */
 board[i][move] = i * 7 + move + 1;
 return;
