@@ -633,6 +633,7 @@ hasComputerWon: hasComputerWon
 // ends function getBoardState(board)
 // is it better to avoid let
 // is it better to have some of these functions outside?
+// Is getBoardState(board) like a catch-all function to create an object
 
 
 
@@ -642,7 +643,7 @@ desired column (starting from the bottom -- that is, board.length - 1 -- and
 working our way up)
 
 **** AC -- if the move has no yellow or red in it, i is board.length minus 1
-where does board.length come from?
+where does board.length come from? it's the condition that matches the while.
 
 */
 function applyMove(board, move, isPlayerTurn) {
@@ -662,7 +663,13 @@ i--;
 Undo a move to the board by looking at the top-most token in the desired column
 and removing it.
 
-AC -- this uses the object aspect ....
+AC -- this uses the object aspect .... parameters are board and move, which is a J.
+
+board[i][move] = i * 7 + move + 1 is multiply by 7 for the row and add 1 bc index starts at 0
+no need for second board, just calculates it.
+
+how is `while(true)` used? -- that is while the space is occupied, then replace? 
+why not just do it instead of requiring the while?
 */
 
 function unapplyMove(board, move) {
@@ -694,6 +701,7 @@ Here, we apply no heuristics and just assign every board position a value of 0.
 ahead and directly see won and lost board positions.)
 */
 function evaluateBoardPosition(board) {
+// AC: I'm not sure how this works. Should I add in my own?
 return 0;
 }
 
@@ -702,6 +710,8 @@ Minimax, a largely line-by-line implementation of the Wikipedia pseudo-code
 
 Note that the third argument is not used; instead, we examine the board directly
 to determine whose turn it is.
+
+AC: Why do you add depth to the first parts here?
 */
 function minimax(board, depth /*, player*/) {
 
