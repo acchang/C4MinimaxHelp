@@ -540,7 +540,8 @@ Not all (i, j) indexes are valid.
 isInbound(boardLocation) returns true if (boardLocation.i, boardLocation.j) represents
 a spot on the board that actually exists (and isn't out-of-range).
 
-AC: This is to check four in a row doesn't go out of bounds
+AC: This is to check four in a row doesn't go out of bounds. isInbound looks at board location and
+if greater or equal to zero or less than board length
 */	
 let isInbound /* as opposed to being out-of-bounds */ = function (boardLocation) {
 return 0 <= boardLocation.i && boardLocation.i < board.length
@@ -611,6 +612,7 @@ for (let direction of directions) {
  
    // AC: this only advances rightward though, don't I need leftward too?
    // how does it know where to start from/ what 0,0 is with the `for` statements starting at 0?
+   // A: it's because it's part of the minimax, it will check it all
    // this is all in the function getBoardState(board)
 
    let possibleWinner = check4(location1, location2, location3, location4);
@@ -625,16 +627,16 @@ for (let direction of directions) {
 
 return {
 moves: hasPlayerWon || hasComputerWon ? [] : findAvailableIndexes(board),
+// if either has won then moves is nothing, else findAvailableIndexes
 isPlayerTurn: isPlayerTurn,
 hasPlayerWon: hasPlayerWon,
 hasComputerWon: hasComputerWon
 };
 }
-// ends function getBoardState(board)
+// AC: ends function getBoardState(board)
 // is it better to avoid let
-// is it better to have some of these functions outside?
+// is it better to have some of these functions outside? No bc all these need to be part of the object
 // Is getBoardState(board) like a catch-all function to create an object
-
 
 
 /*
@@ -644,6 +646,10 @@ working our way up)
 
 **** AC -- if the move has no yellow or red in it, i is board.length minus 1
 where does board.length come from? it's the condition that matches the while.
+the i -- works like the for. 
+so from the bottom (board.length -1 since there is a row 0)
+if that space does nor have red or yellow, put in a red or yellow (depending on turn)
+else it subtracts i--? under what condition would it be false? while what is true?
 
 */
 function applyMove(board, move, isPlayerTurn) {
@@ -653,7 +659,6 @@ if (board[i][move] !== "Yellow" && board[i][move] !== "Red") {
 board[i][move] = ( isPlayerTurn ? "Yellow" : "Red" );
 return;
 }
-
 i--;
 }
 }
@@ -670,6 +675,7 @@ no need for second board, just calculates it.
 
 how is `while(true)` used? -- that is while the space is occupied, then replace? 
 why not just do it instead of requiring the while?
+while (true) repeats until what condition is false?
 */
 
 function unapplyMove(board, move) {
@@ -712,6 +718,10 @@ Note that the third argument is not used; instead, we examine the board directly
 to determine whose turn it is.
 
 AC: Why do you add depth to the first parts here?
+
+remember minimax and move comes from computerMove
+.special is what minimax chooses
+
 */
 function minimax(board, depth /*, player*/) {
 
@@ -738,6 +748,8 @@ let bestMoveFoundSoFar = null;
 let bestScoreFoundSoFar = -Infinity;
 
 for (let move of moves) {
+// moves comes from findAvailableIndex, it keeps re-gathering until depth out or none left
+// I'm not familiar with the for/let convention
 
 applyMove(board, move, isPlayerTurn);
 let scoreOfThisMove = minimax(board, depth - 1).score;
@@ -752,6 +764,9 @@ if (scoreOfThisMove > bestScoreFoundSoFar) {
 // "special" should probably be named something like "move" instead
 return { score: bestScoreFoundSoFar, special: bestMoveFoundSoFar };
 } else {
+
+// this plays the other side:
+
 let bestMoveFoundSoFar = null;
 let bestScoreFoundSoFar = Infinity;
 
