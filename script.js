@@ -749,7 +749,7 @@ let bestScoreFoundSoFar = -Infinity;
 
 for (let move of moves) {
 // moves comes from findAvailableIndex, it keeps re-gathering until depth out or none left
-// I'm not familiar with the for/let convention
+// I'm not familiar with the for/let convention ... I guess it's a loop for each of the elements in the object
 
 applyMove(board, move, isPlayerTurn);
 let scoreOfThisMove = minimax(board, depth - 1).score;
