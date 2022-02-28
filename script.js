@@ -645,11 +645,10 @@ desired column (starting from the bottom -- that is, board.length - 1 -- and
 working our way up)
 
 **** AC -- if the move has no yellow or red in it, i is board.length minus 1
-where does board.length come from? it's the condition that matches the while.
-the i -- works like the for. 
+where does board.length come from? i is the starting point, and it reduces by 1 for each iteration.. 
 so from the bottom (board.length -1 since there is a row 0)
 if that space does nor have red or yellow, put in a red or yellow (depending on turn)
-else it subtracts i--? under what condition would it be false? while what is true?
+else it subtracts i--. it exits the loop when the if condition is true.
 
 */
 function applyMove(board, move, isPlayerTurn) {
