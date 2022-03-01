@@ -638,7 +638,6 @@ hasComputerWon: hasComputerWon
 // is it better to have some of these functions outside? No bc all these need to be part of the object
 // Is getBoardState(board) like a catch-all function to create an object
 
-
 /*
 Applies the move to the board by looking for the first available spot in the
 desired column (starting from the bottom -- that is, board.length - 1 -- and
@@ -661,7 +660,6 @@ return;
 i--;
 }
 }
-
 
 /*
 Undo a move to the board by looking at the top-most token in the desired column
