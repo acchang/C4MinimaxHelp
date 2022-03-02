@@ -610,7 +610,7 @@ for (let direction of directions) {
    let location3 = { i: i + direction[0] * 2, j: j + direction[1] * 2 };
    let location4 = { i: i + direction[0] * 3, j: j + direction[1] * 3 };
  
-   // AC: this only advances rightward though, don't I need leftward too?
+   // AC: this only advances rightward though, don't I need leftward too? No bc goes L-R, eval everything
    // how does it know where to start from/ what 0,0 is with the `for` statements starting at 0?
    // A: it's because it's part of the minimax, it will check it all
    // this is all in the function getBoardState(board)
@@ -634,9 +634,11 @@ hasComputerWon: hasComputerWon
 };
 }
 // AC: ends function getBoardState(board)
-// is it better to avoid let
+// is it better to avoid let -- no avoid VAR
 // is it better to have some of these functions outside? No bc all these need to be part of the object
 // Is getBoardState(board) like a catch-all function to create an object
+// yes possible outside
+
 
 /*
 Applies the move to the board by looking for the first available spot in the
@@ -671,6 +673,7 @@ board[i][move] = i * 7 + move + 1 is multiply by 7 for the row and add 1 bc inde
 no need for second board, just calculates it.
 
 how is `while(true)` used? -- that is while the space is occupied, then replace? 
+Ans: While is a lazy loop
 why not just do it instead of requiring the while?
 while (true) repeats until what condition is false?
 */
@@ -704,7 +707,7 @@ Here, we apply no heuristics and just assign every board position a value of 0.
 ahead and directly see won and lost board positions.)
 */
 function evaluateBoardPosition(board) {
-// AC: I'm not sure how this works. Should I add in my own?
+// AC: I'm not sure how this works. Should I add in my own? YES
 return 0;
 }
 
@@ -714,7 +717,7 @@ Minimax, a largely line-by-line implementation of the Wikipedia pseudo-code
 Note that the third argument is not used; instead, we examine the board directly
 to determine whose turn it is.
 
-AC: Why do you add depth to the first parts here?
+AC: Why do you add depth to the first parts here? to make choice come earlier.
 
 remember minimax and move comes from computerMove
 .special is what minimax chooses
