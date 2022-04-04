@@ -734,11 +734,15 @@ let hasComputerWon = boardState.hasComputerWon;
 if (depth === 0)
 return { score: evaluateBoardPosition(board) };
 
-if (hasPlayerWon) 
+if (hasPlayerWon) {
+   console.log("Player Wins")
 return { score: -10000000000 - depth };
+}
 
-if (hasComputerWon)
+if (hasComputerWon){
+   console.log("Computer Wins")
 return { score: 10000000000 + depth };
+}
 
 if (moves.length === 0)
 return { score: 0 };
