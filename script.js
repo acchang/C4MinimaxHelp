@@ -541,7 +541,8 @@ isInbound(boardLocation) returns true if (boardLocation.i, boardLocation.j) repr
 a spot on the board that actually exists (and isn't out-of-range).
 
 AC: This is to check four in a row doesn't go out of bounds. isInbound looks at board location and
-if greater or equal to zero or less than board length
+if greater or equal to zero or less than board length. isInbound is needed because the locations just
+multiply to place
 */	
 let isInbound /* as opposed to being out-of-bounds */ = function (boardLocation) {
 return 0 <= boardLocation.i && boardLocation.i < board.length
@@ -594,6 +595,7 @@ let directions = [
 for (let i = 0; i < board.length; i++) {
 for (let j = 0; j < board[0].length; j++) {
 for (let direction of directions) {
+   // the forloop plots in all directions, that's why we need isInbound
    /*
        For instance, if direction is [1, 0] and i = 3, j = 2,
        we would get the following 4 locations:
