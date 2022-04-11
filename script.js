@@ -635,11 +635,9 @@ hasPlayerWon: hasPlayerWon,
 hasComputerWon: hasComputerWon
 };
 }
-// AC: ends function getBoardState(board)
-// is it better to avoid let -- no avoid VAR
-// is it better to have some of these functions outside? No bc all these need to be part of the object
-// Is getBoardState(board) like a catch-all function to create an object
-// yes possible outside
+// AC: getBoardState(board) ends here. Basically the way it works is it checks the entire board
+// it uses the for loops and directions, then the check4 and the isInbound to see if its valid
+// ONE THING I DON'T UNDERSTAND is why is valid needed, if not valid it wouldn't have a color.
 
 
 /*
@@ -652,6 +650,8 @@ where does board.length come from? i is the starting point, and it reduces by 1 
 so from the bottom (board.length -1 since there is a row 0)
 if that space does nor have red or yellow, put in a red or yellow (depending on turn)
 else it subtracts i--. it exits the loop when the if condition is true.
+the move come from let moves = boardState.moves;
+// boardstate.moves comes from findAvailableIndex, it keeps re-gathering until depth out or none left
 
 */
 function applyMove(board, move, isPlayerTurn) {
