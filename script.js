@@ -373,7 +373,9 @@ function countEmptySpaces(counter, ele) {
    if (Number.isInteger(ele)) counter +=1
    return counter}
 
-function scoreTheArray(array) {
+function scoreTheArray(array) { 
+   /* I cannot reuse this in minimax because it always assigns the bigger to be chosen. 
+   Who player is changes depending on the boolean */
    if (array.reduce(countPlayerMarkers, 0) === 4){return 1000}
    else if ((array.reduce(countPlayerMarkers, 0) === 3) && (array.reduce(countEmptySpaces, 0) === 1)) 
       {return 10}
@@ -392,59 +394,38 @@ function pickBestMove() {
    let bestColumn = (availableIndexes[Math.floor(Math.random() * availableIndexes.length)])
    let parallelAvailable = findAvailableIndexes(parallelBoard)
 
-for (s=0; s<parallelAvailable.length; s++) {
-   score = 0 
-   let i;
-   let j = parallelAvailable[s]
-   for (i = 5; i > -1; i--) 
-      if (Number.isInteger(parallelBoard[i][j])) {
-      parallelBoard[i].splice((j), 1, whosPlaying())
-      break
-      }
+   for (s=0; s<parallelAvailable.length; s++) {
+      score = 0 
+      let i;
+      let j = parallelAvailable[s]
+      for (i = 5; i > -1; i--) 
+         if (Number.isInteger(parallelBoard[i][j])) {
+         parallelBoard[i].splice((j), 1, whosPlaying())
+         break
+         }
 
    let positionScore = assessHorizWindows(parallelBoard) + assessVertWindows(parallelBoard)
          + assessUprightWindows(parallelBoard) + assessDownrightWindows(parallelBoard)
          + weightMiddles(parallelBoard)
 
-console.log("index " + j + " in spot " + gameboard[i][j]+ " score " + positionScore )
+   console.log("index " + j + " in spot " + gameboard[i][j]+ " score " + positionScore )
 
-parallelBoard[i].splice((j), 1, gameboard[i][j])
-console.log("Top Score was " + bestScore)
+   parallelBoard[i].splice((j), 1, gameboard[i][j])
+   console.log("Top Score was " + bestScore)
 
-if (positionScore > bestScore || positionScore == bestScore) {
-   bestScore = positionScore
-   bestColumn = j
-   console.log("Top Column/Score is now " + bestColumn, bestScore)
-   }
-else {console.log("columm " + s + " is not better")}
-   }
-
-console.log("Final Column/Score is " + bestColumn, bestScore)
-return bestColumn
-};
-
-// minimax
-
-function scoreGameboard(board){
-   score = 0
-   let SGB = (assessHorizWindows(board) + assessVertWindows(board)
-   + assessUprightWindows(board) + assessDownrightWindows(board)
-   + weightMiddles(board) 
-   )
-   return SGB
-};
-
-function isTerminalMode(board){
-   if (isThereAWinner == true || [findAvailableIndexes(board)].length == 0)
-   {return true}
-};
-
-function findOpenRow(board, column){
-   for (i = 5; i > -1; i--) {
-      if (Number.isInteger(board[i][column])) {
-      return i
+   /* after adding to get a score for the first move, it makes it best, then tests the next
+   if position score is better than best score, then use position score. Only looks ahead one */
+   
+   if (positionScore > bestScore || positionScore == bestScore) {
+      bestScore = positionScore
+      bestColumn = j
+      console.log("Top Column/Score is now " + bestColumn, bestScore)
       }
-   }
+   else {console.log("columm " + s + " is not better")}
+      }
+   console.log("Final Column/Score is " + bestColumn, bestScore)
+   
+   return bestColumn
 };
 
 function computerPlays() {
@@ -462,7 +443,7 @@ function computerPlays() {
    {if (Number.isInteger(gameboard[i][indexPick])) {
       gameboard[i].splice((indexPick), 1, whosPlaying())
       parallelBoard[i].splice((indexPick), 1, whosPlaying())
-      console.log("**** computerplays " + indexPick + " SG score is " + scoreGameboard(parallelBoard))
+      // console.log("**** computerplays " + indexPick + " SG score is " + scoreGameboard(parallelBoard))
       mainTable.innerHTML = ""
       drawBoard()
       checkForWinners() 
@@ -616,9 +597,23 @@ function unapplyMove(board, move) {
 Here, we apply no heuristics and just assign every board position a value of 0.
 (This means that the search will only be effective to the extent that it can look
 ahead and directly see won and lost board positions.) */
+
 function evaluateBoardPosition(board) {
-      // NEED TO FIGURE OUT HOW TO EVALUATE
-      return 0;
+      /* let positionScore = assessHorizWindows(parallelBoard) + assessVertWindows(parallelBoard)
+      + assessUprightWindows(parallelBoard) + assessDownrightWindows(parallelBoard)
+      + weightMiddles(parallelBoard)
+      return 0; 
+
+      So, cycle through the board, count the ones in a row and use same weight for both.
+      No defensive moves. 
+
+      I am assessing board conditions because depth is just the number of times it runs
+      and I want to weight the board that has more opportunity after running the depth.  
+      You could probably use scoreTheArray, assessHorizWindows, etc as the heuristic although
+      scoreTheArray would then need to be modified to not rely on global state (since it currently
+      invokes countPlayerMarkers, which in turn relies on whosPlaying, which then uses the 
+      variable playerOneTurn, which isn't going to be updated during a minimax search).
+      */
 }
 
 /* Minimax, a largely line-by-line implementation of the Wikipedia pseudo-code
