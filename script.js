@@ -628,78 +628,66 @@ function evaluateHorizWindows(board) {
 };
 
 function evaluateVertWindows(board) {
-   let vertTotal = 0
+   let vertEval = 0
    for (r=5; r>2; r--) {
       for (c=0; c<7; c++){
          let window = [board[r][c], board[r-1][c], board[r-2][c], board[r-3][c]]
             vertEval += scoreForEval(window)
       }
    }
-   return vertTotal
+   return vertEval
 };
 
 function evaluateUprightWindows (board) {
-   let uprightTotal = 0
+   let uprightEval = 0
    for (r=5; r>2; r--) {
       for (c=0; c<4; c++){
          let window = [board[r][c], board[r-1][c+1], board[r-2][c+2], board[r-3][c+3]]
-            uprightTotal += scoreTheArray(window)
+            uprightEval += scoreForEval(window)
       }
    }
-   return uprightTotal
+   return uprightEval
 };
 
-function assessDownrightWindows (board) {
-   let downrightTotal = 0
+function evaluateDownrightWindows (board) {
+   let downrightEval = 0
    for (r=0; r<3; r++) {
          for (c=0; c<4; c++){
             let window = [board[r][c], board[r+1][c+1], board[r+2][c+2], board[r+3][c+3]]
-               downrightTotal += scoreTheArray(window)
+               downrightEval += scoreForEval(window)
          }
    }
-   return downrightTotal
+   return downrightEval
 };
 
-function weightMiddles(board){
-   let middles = [board[0][3],board[1][3],board[2][3],board[3][3],board[4][3],board[5][3]]
-      let middleScore = [middles.reduce(countPlayerMarkers, 0)] * 3
+function evalMiddles(board){
+   let middlerow = [board[0][3],board[1][3],board[2][3],board[3][3],board[4][3],board[5][3]]
+      let middleScore = ([middlerow.reduce(countYellowMarkers, 0)] * -3) +
+      ([middlerow.reduce(countRedMarkers, 0)] * 3) 
    return middleScore 
 };
 
-function countPlayerMarkers(counter, ele) { 
-   if (ele == whosPlaying()) counter +=1
+function countYellowMarkers(counter, ele) { 
+   if (ele == "Yellow") counter +=1
    return counter}
 
-function countOpponentMarkers(counter, ele) { 
-   if (ele == whosNotPlaying()) counter +=1
+function countRedMarkers(counter, ele) { 
+   if (ele == "Red") counter +=1
    return counter}
 
-function countEmptySpaces(counter, ele) { 
-   if (Number.isInteger(ele)) counter +=1
-   return counter}
-
-function scoreTheArray(array) { 
-   /* I cannot reuse this in minimax because it always assigns the bigger to be chosen. 
-   Who player is changes depending on the boolean */
-   if (array.reduce(countPlayerMarkers, 0) === 4){return 1000}
-   else if ((array.reduce(countPlayerMarkers, 0) === 3) && (array.reduce(countEmptySpaces, 0) === 1)) 
-      {return 10}
-   else if ((array.reduce(countPlayerMarkers, 0) === 2) && (array.reduce(countEmptySpaces, 0) === 2))
-      {return 5}
-   else if ((array.reduce(countOpponentMarkers, 0) === 3) && (array.reduce(countEmptySpaces, 0) === 1)) 
+function scoreForEval(array) { 
+   if (array.reduce(countYellowMarkers, 0) === 4){return -1000}
+   else if (array.reduce(countRedMarkers, 0) === 4){return 1000}
+   else if ((array.reduce(countYellowMarkers, 0) === 3) && (array.reduce(countEmptySpaces, 0) === 1)) 
       {return -500}
-   else if ((array.reduce(countOpponentMarkers, 0) === 2) && (array.reduce(countEmptySpaces, 0) === 2)) 
+   else if ((array.reduce(countRedMarkers, 0) === 3) && (array.reduce(countEmptySpaces, 0) === 1)) 
+      {return 500}
+   else if ((array.reduce(countYellowMarkers, 0) === 2) && (array.reduce(countEmptySpaces, 0) === 2))
       {return -250}
+   else if ((array.reduce(countRedMarkers, 0) === 2) && (array.reduce(countEmptySpaces, 0) === 2)) 
+      {return 250}
    else {return 0}
 };
-
-
-
-
-
-
-
-
 
 /* Minimax, a largely line-by-line implementation of the Wikipedia pseudo-code
 remember minimax comes from computerMove; .special is what minimax chooses */
