@@ -431,7 +431,7 @@ function pickBestMove() {
 function computerPlays() {
    if (itsAMinimaxGame == true) {
       availableIndexes = findAvailableIndexes(gameboard)
-      indexPick = (minimax(parallelBoard, 6)).special
+      indexPick = (minimax(parallelBoard, 4)).special
    }
    else if (itsAScoredGame == true)
    {indexPick = pickBestMove() }
@@ -682,26 +682,29 @@ function scoreForEval(array) {
 remember minimax comes from computerMove; .special is what minimax chooses */
 
 function minimax(board, depth) {
+
+   if (depth === 0) {
+      // console.log("score: " + evaluateBoardPosition(board))
+      return { score: evaluateBoardPosition(board) }
+   };
+
+   // since getBoardState(board) is demanding, no sense in invoking when not needed for scoring
+
       let boardState = getBoardState(board);
       let moves = boardState.moves;
       let isPlayerTurn = boardState.isPlayerTurn;
       let hasPlayerWon = boardState.hasPlayerWon;
       let hasComputerWon = boardState.hasComputerWon;
 
-   if (depth === 0) {
-      console.log("score: " + evaluateBoardPosition(board))
-      return { score: evaluateBoardPosition(board) };
-   } 
-
    if (hasPlayerWon) {
       console.log("Player Wins")
-      return { score: -10000000000 - depth };
-   }
+      return { score: -10000000000 - depth }
+   };
    
    if (hasComputerWon){
       console.log("Computer Wins")
-      return { score: 10000000000 + depth };
-   }
+      return { score: 10000000000 + depth }
+   };
 
    if (moves.length === 0)
       return { score: 0 };
