@@ -431,9 +431,7 @@ function pickBestMove() {
 function computerPlays() {
    if (itsAMinimaxGame == true) {
       availableIndexes = findAvailableIndexes(gameboard)
-      console.log("AI chooses from: " + availableIndexes)
-      // indexPick = (availableIndexes[Math.floor(Math.random() * availableIndexes.length)])
-   indexPick = (minimax(parallelBoard, 6)).special
+      indexPick = (minimax(parallelBoard, 6)).special
    }
    else if (itsAScoredGame == true)
    {indexPick = pickBestMove() }
@@ -593,28 +591,19 @@ function unapplyMove(board, move) {
    }
 }
 
-/* Having a 3-in-a-row should probably give some points.
-Here, we apply no heuristics and just assign every board position a value of 0.
-(This means that the search will only be effective to the extent that it can look
-ahead and directly see won and lost board positions.) */
 
 function evaluateBoardPosition(board) {
-      /* let positionScore = assessHorizWindows(parallelBoard) + assessVertWindows(parallelBoard)
-      + assessUprightWindows(parallelBoard) + assessDownrightWindows(parallelBoard)
-      + weightMiddles(parallelBoard)
-      return 0; 
+   let evaluatedBoardScore = evaluateHorizWindows(board) + evaluateVertWindows(board)
+   + evaluateUprightWindows(board) + evaluateDownrightWindows(board)
+   + evalMiddles(board)
+   return evaluatedBoardScore;
+};
 
-      So, cycle through the board, count the ones in a row and use same weight for both.
+   /* So, cycle through the board, count the ones in a row and use same weight for both.
       No defensive moves. 
 
       I am assessing board conditions because depth is just the number of times it runs
-      and I want to weight the board that has more opportunity after running the depth.  
-      You could probably use scoreTheArray, assessHorizWindows, etc as the heuristic although
-      scoreTheArray would then need to be modified to not rely on global state (since it currently
-      invokes countPlayerMarkers, which in turn relies on whosPlaying, which then uses the 
-      variable playerOneTurn, which isn't going to be updated during a minimax search).
-      */
-}
+      and I want to weight the board that has more opportunity after running the depth.   */
 
 function evaluateHorizWindows(board) {
    let horizEval = 0
@@ -699,7 +688,10 @@ function minimax(board, depth) {
       let hasPlayerWon = boardState.hasPlayerWon;
       let hasComputerWon = boardState.hasComputerWon;
 
-   if (depth === 0) return { score: evaluateBoardPosition(board) };
+   if (depth === 0) {
+      console.log("score: " + evaluateBoardPosition(board))
+      return { score: evaluateBoardPosition(board) };
+   } 
 
    if (hasPlayerWon) {
       console.log("Player Wins")
@@ -719,9 +711,6 @@ function minimax(board, depth) {
    let bestScoreFoundSoFar = -Infinity;
 
    for (let move of moves) {
-// moves comes from findAvailableIndex, it keeps re-gathering until depth out or none left
-// I'm not familiar with the for/let convention ... I guess it's a loop for each of the elements in the object
-
       applyMove(board, move, isPlayerTurn);
       let scoreOfThisMove = minimax(board, depth - 1).score;
       unapplyMove(board, move);
@@ -735,6 +724,7 @@ function minimax(board, depth) {
 // "special" should probably be named something like "move" instead
    return { score: bestScoreFoundSoFar, special: bestMoveFoundSoFar };
    } else {
+
 // this plays the other side:
    let bestMoveFoundSoFar = null;
    let bestScoreFoundSoFar = Infinity;
